@@ -76,6 +76,9 @@ class StdUnorderedMapSynthProvider:
         template_arg_num = 4 if self.kind == "map" else 3
         allocator_type = type.GetTemplateArgumentType(template_arg_num)
         data_type = allocator_type.GetTemplateArgumentType(0)
+        if not data_type:
+            head = self.valobj.GetChildMemberWithName('_M_h')
+            data_type = head.GetType().GetTypedefedType().GetTypedefedType().GetTemplateArgumentType(1)
         return data_type
 
     def update(self):
